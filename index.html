@@ -139,7 +139,7 @@
                 var primos = (days * 60) + (months * 5 * 160) + (Math.floor(stars/3) * 50) + buy
 
                 if (bp == "yes") {
-                    primos += 1320
+                    primos += (months * 1320)
                 }
                 if (welkins == "yes") {
                     primos += (days * 90)
@@ -150,7 +150,6 @@
                 var hardPities = Math.floor(wishes / 90)
                 let guranteed;
                 if (coinflip == "yes") {
-                    console.log("yessir")
                     guranteed = Math.floor(hardPities / 2) + (hardPities % 2)
                 } else {
                     guranteed = Math.floor(hardPities / 2)
