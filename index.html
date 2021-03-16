@@ -102,8 +102,6 @@
             window.onload = getDates()
 
             function calculate() {
-                console.clear()
-
                 const rbs = document.querySelectorAll('input[name="welkins"]');
                 let welkins;
                 for (const rb of rbs) {
@@ -133,10 +131,17 @@
 
                 var stars = parseInt(document.getElementById("stars").value)
                 var buy = parseInt(document.getElementById("buy").value)
-                var months = parseInt(enddate.getMonth() - startdate.getMonth());
+                var years = parseInt(enddate.getYear() - startdate.getYear());
+                let months;
+                if (years > 0) {
+                    months = (years - 1) * 12 + (12 - startdate.getMonth() + 1) + enddate.getMonth();
+                } else {
+                    months = parseInt(enddate.getMonth() - startdate.getMonth());
+                }
                 var days = parseInt((enddate - startdate) / (1000*60*60*24));
 
-                var primos = (days * 60) + (months * 5 * 160) + (Math.floor(stars/3) * 50) + buy
+                console.log(months)
+                var primos = (days * 60) + (months * 5 * 160) + (2*months*Math.floor(stars/3) * 50) + buy
 
                 if (bp == "yes") {
                     primos += (months * 1320)
