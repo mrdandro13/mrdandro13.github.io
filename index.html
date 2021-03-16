@@ -1,0 +1,168 @@
+<html>
+    <meta charset="UTF-8">
+    <title>Genshin Primogem Calculations</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="favicon.jpg" rel="shortcut icon" type="image/x-icon" />
+
+        <h1 align="center">
+            Genshin Primogem Calculator
+        </h1>
+
+        <label for="today">Start Date:</label>
+        <input type="date" id="today" name="today">
+
+        <br><br>
+
+        <label for="today">End Date:</label>
+        <input type="date" id="end" name="end">
+
+        <br><br>
+
+        Abyss Stars:
+
+        <br>
+        <input type="text" id="stars"></input>
+        <br><br>
+
+        Primogems Purchased:
+
+        <br>
+        <input type="text" id="buy"></input>
+        <br><br>
+
+        Buy Welkins?
+        <br>
+        <div>
+        <input type="radio" name="welkins" id="yes" value="yes"
+         checked>
+        <label for="welkins">Yes</label>
+        </div>
+        <div>
+        <input type="radio" name="welkins" id="no" value="no">
+        <label for="no">No</label>
+        </div>
+        <br>
+        <br>
+
+        Buy Battle Pass?
+        <br>
+        <div>
+        <input type="radio" name="bp" id="yes" value="yes"
+         checked>
+        <label for="bp">Yes</label>
+        </div>
+        <div>
+        <input type="radio" name="bp" id="no" value="no">
+        <label for="no">No</label>
+        </div>
+        <br>
+        <br>
+
+        Is your next 5⭐ guranteed?
+        <br>
+        <div>
+        <input type="radio" name="coinflip" id="yes" value="yes"
+         checked>
+        <label for="coinflip">Yes</label>
+        </div>
+        <div>
+        <input type="radio" name="coinflip" id="no" value="no">
+        <label for="no">No</label>
+        </div>
+        <br>
+        <br>
+
+        <button type="button" onclick="calculate()">Run Calculation</button>
+
+        <h1 id="primos">Primogems 💎: </h1>
+        <h1 id="wish">Wishes 🌠: </h1>
+        <h1 id="soft">Soft Pities: </h1>
+        <h1 id="hard">Hard Pities: </h1>
+        <h1 id="guranteed">Guranteed Rate Up 5⭐: </h1>
+
+        <script>
+            let startdate;
+            let enddate;
+
+            function getDates() {
+                document.getElementById("today").addEventListener("change", function() {
+                    var input = this.value;
+                    startdate = new Date(input);
+                    startdate.setDate(startdate.getDate() + 1)
+                });
+
+                document.getElementById("end").addEventListener("change", function() {
+                    var input = this.value;
+                    enddate = new Date(input);
+                    enddate.setDate(enddate.getDate() + 1)
+                });
+
+            }
+
+            window.onload = getDates()
+
+            function calculate() {
+                console.clear()
+
+                const rbs = document.querySelectorAll('input[name="welkins"]');
+                let welkins;
+                for (const rb of rbs) {
+                    if (rb.checked) {
+                        welkins = rb.value;
+                        break;
+                    }
+                }
+
+                const sbr= document.querySelectorAll('input[name="bp"]');
+                let bp;
+                for (const rb of sbr) {
+                    if (rb.checked) {
+                        bp = rb.value;
+                        break;
+                    }
+                }
+
+                const br= document.querySelectorAll('input[name="coinflip"]');
+                let coinflip;
+                for (const rb of br) {
+                    if (rb.checked) {
+                        coinflip = rb.value;
+                        break;
+                    }
+                }
+
+                var stars = parseInt(document.getElementById("stars").value)
+                var buy = parseInt(document.getElementById("buy").value)
+                var months = parseInt(enddate.getMonth() - startdate.getMonth());
+                var days = parseInt((enddate - startdate) / (1000*60*60*24));
+
+                var primos = (days * 60) + (months * 5 * 160) + (Math.floor(stars/3) * 50) + buy
+
+                if (bp == "yes") {
+                    primos += 1320
+                }
+                if (welkins == "yes") {
+                    primos += (days * 90)
+                }
+
+                var wishes = Math.floor(primos / 160)
+                var softPities = Math.floor(wishes / 76)
+                var hardPities = Math.floor(wishes / 90)
+                let guranteed;
+                if (coinflip == "yes") {
+                    console.log("yessir")
+                    guranteed = Math.floor(hardPities / 2) + (hardPities % 2)
+                } else {
+                    guranteed = Math.floor(hardPities / 2)
+                }
+
+                document.getElementById("primos").innerHTML = "Primogems 💎: " + primos
+                document.getElementById("wish").innerHTML = "Wishes 🌠: " + wishes
+                document.getElementById("soft").innerHTML = "Soft Pities: " + softPities
+                document.getElementById("hard").innerHTML = "Hard Pities: " + hardPities
+                document.getElementById("guranteed").innerHTML = "Guranteed Rate Up 5⭐: " + guranteed
+            }
+
+        </script>
+    </body>
+</html>
