@@ -1,6 +1,11 @@
 body {
     background-color: #2F2B2B;
     color: white;
-    -webkit-text-stroke-width: 0.01em;
-    -webkit-text-stroke-color: black;
+}
+
+.calc {
+    background-color: #008CCF;
+    font-size: 24px;
+    padding: 12px 18px;
+    border: none;
 }

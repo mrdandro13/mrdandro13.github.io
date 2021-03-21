@@ -72,9 +72,12 @@
         <br>
         <br>
 
-        <button type="button" onclick="calculate()">Run Calculation</button>
+        <span class="calc">
+            <label onclick="calculate()">Run Calculation</label>
+        </span>
 
         <h1 id="primos">Primogems 💎: </h1>
+        <h3 id="breakdown"></h3>
         <h1 id="wish">Wishes 🌠: </h1>
         <h1 id="soft">Soft Pities: </h1>
         <h1 id="hard">Hard Pities: </h1>
@@ -140,18 +143,26 @@
                 }
                 var days = parseInt((enddate - startdate) / (1000*60*60*24));
 
-                var primos = (days * 60) + (months * 5 * 160) + (2*months*Math.floor(stars/3) * 50) + buy
+                var commissions = days * 60
+                var paimonShop = (months-1) * 5 * 160
+                var abyss = (2*months*Math.floor(stars/3) * 50)
+                var primos = commissions + paimonShop + abyss + buy
 
+                var battlepass = 0
+                var welk = 0
                 if (bp == "yes") {
-                    primos += (months * 1320)
+                    battlepass = months * 1320
+                    primos += battlepass
                 }
                 if (welkins == "yes") {
-                    primos += (days * 90)
+                    welk = days * 90
+                    primos += welk
                 }
 
                 var wishes = Math.floor(primos / 160)
                 var softPities = Math.floor(wishes / 76)
                 var hardPities = Math.floor(wishes / 90)
+
                 let guranteed;
                 if (coinflip == "yes") {
                     guranteed = Math.floor(hardPities / 2) + (hardPities % 2)
@@ -159,7 +170,11 @@
                     guranteed = Math.floor(hardPities / 2)
                 }
 
+                var breakdown = ""
+                breakdown += "Commissions: " + commissions + " · Paimon Shop: " + paimonShop + " · Abyss: " + abyss + " · Welkins: " + welk + " · Battle Pass: " + battlepass
+
                 document.getElementById("primos").innerHTML = "Primogems 💎: " + primos
+                document.getElementById("breakdown").innerHTML = breakdown
                 document.getElementById("wish").innerHTML = "Wishes 🌠: " + wishes
                 document.getElementById("soft").innerHTML = "Soft Pities: " + softPities
                 document.getElementById("hard").innerHTML = "Hard Pities: " + hardPities
