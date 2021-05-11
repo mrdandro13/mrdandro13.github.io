@@ -18,6 +18,12 @@
 
         <br><br>
 
+        Pity Count:
+
+        <br>
+        <input type="text" id="pity"></input>
+        <br><br>
+
         Abyss Stars:
 
         <br>
@@ -132,6 +138,7 @@
                     }
                 }
 
+                var pitycount = parseInt(document.getElementById("pity").value)
                 var stars = parseInt(document.getElementById("stars").value)
                 var buy = parseInt(document.getElementById("buy").value)
                 var years = parseInt(enddate.getYear() - startdate.getYear());
@@ -159,7 +166,7 @@
                     primos += welk
                 }
 
-                var wishes = Math.floor(primos / 160)
+                var wishes = pitycount + Math.floor(primos / 160)
                 var softPities = Math.floor(wishes / 76)
                 var hardPities = Math.floor(wishes / 90)
 
