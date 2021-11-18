@@ -1,11 +1,7 @@
-body {
-    background-color: #2F2B2B;
-    color: white;
+h1 {
+    color: green;
 }
 
-.calc {
-    background-color: #008CCF;
-    font-size: 24px;
-    padding: 12px 18px;
-    border: none;
+.word {
+    color: blue;
 }

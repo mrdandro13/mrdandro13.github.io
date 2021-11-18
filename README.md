@@ -1,4 +1,3 @@
-# Genshin Primogem Calculator
+# Random
 
-do calculation stuff
-
+random conversation

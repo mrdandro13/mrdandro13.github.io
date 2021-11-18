@@ -1,0 +1,193 @@
+<html>
+    <meta charset="UTF-8">
+    <title>Genshin Primogem Calculations</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="favicon.jpg" rel="shortcut icon" type="image/x-icon" />
+
+        <h1 align="center">
+            Genshin Primogem Calculator
+        </h1>
+
+        <label for="today">Start Date:</label>
+        <input type="date" id="today" name="today">
+
+        <br><br>
+
+        <label for="today">End Date:</label>
+        <input type="date" id="end" name="end">
+
+        <br><br>
+
+        Pity Count:
+
+        <br>
+        <input type="text" id="pity"></input>
+        <br><br>
+
+        Abyss Stars:
+
+        <br>
+        <input type="text" id="stars"></input>
+        <br><br>
+
+        Primogems Purchased:
+
+        <br>
+        <input type="text" id="buy"></input>
+        <br><br>
+
+        Buy Welkins?
+        <br>
+        <div>
+        <input type="radio" name="welkins" id="yes" value="yes"
+         checked>
+        <label for="welkins">Yes</label>
+        </div>
+        <div>
+        <input type="radio" name="welkins" id="no" value="no">
+        <label for="no">No</label>
+        </div>
+        <br>
+        <br>
+
+        Buy Battle Pass?
+        <br>
+        <div>
+        <input type="radio" name="bp" id="yes" value="yes"
+         checked>
+        <label for="bp">Yes</label>
+        </div>
+        <div>
+        <input type="radio" name="bp" id="no" value="no">
+        <label for="no">No</label>
+        </div>
+        <br>
+        <br>
+
+        Is your next 5⭐ guranteed?
+        <br>
+        <div>
+        <input type="radio" name="coinflip" id="yes" value="yes"
+         checked>
+        <label for="coinflip">Yes</label>
+        </div>
+        <div>
+        <input type="radio" name="coinflip" id="no" value="no">
+        <label for="no">No</label>
+        </div>
+        <br>
+        <br>
+
+        <span class="calc">
+            <label onclick="calculate()">Run Calculation</label>
+        </span>
+
+        <h1 id="primos">Primogems 💎: </h1>
+        <h3 id="breakdown"></h3>
+        <h1 id="wish">Wishes 🌠: </h1>
+        <h1 id="soft">Soft Pities: </h1>
+        <h1 id="hard">Hard Pities: </h1>
+        <h1 id="guranteed">Guranteed Rate Up 5⭐: </h1>
+
+        <script>
+            let startdate;
+            let enddate;
+
+            function getDates() {
+                document.getElementById("today").addEventListener("change", function() {
+                    var input = this.value;
+                    startdate = new Date(input);
+                    startdate.setDate(startdate.getDate() + 1)
+                });
+
+                document.getElementById("end").addEventListener("change", function() {
+                    var input = this.value;
+                    enddate = new Date(input);
+                    enddate.setDate(enddate.getDate() + 1)
+                });
+
+            }
+
+            window.onload = getDates()
+
+            function calculate() {
+                const rbs = document.querySelectorAll('input[name="welkins"]');
+                let welkins;
+                for (const rb of rbs) {
+                    if (rb.checked) {
+                        welkins = rb.value;
+                        break;
+                    }
+                }
+
+                const sbr= document.querySelectorAll('input[name="bp"]');
+                let bp;
+                for (const rb of sbr) {
+                    if (rb.checked) {
+                        bp = rb.value;
+                        break;
+                    }
+                }
+
+                const br= document.querySelectorAll('input[name="coinflip"]');
+                let coinflip;
+                for (const rb of br) {
+                    if (rb.checked) {
+                        coinflip = rb.value;
+                        break;
+                    }
+                }
+
+                var pitycount = parseInt(document.getElementById("pity").value)
+                var stars = parseInt(document.getElementById("stars").value)
+                var buy = parseInt(document.getElementById("buy").value)
+                var years = parseInt(enddate.getYear() - startdate.getYear());
+                let months;
+                if (years > 0) {
+                    months = (years - 1) * 12 + (12 - startdate.getMonth() + 1) + enddate.getMonth();
+                } else {
+                    months = parseInt(enddate.getMonth() - startdate.getMonth()) + 1;
+                }
+                var days = parseInt((enddate - startdate) / (1000*60*60*24));
+
+                var commissions = days * 60
+                var paimonShop = (months-1) * 5 * 160
+                var abyss = (months*Math.floor(stars/3) * 50)
+                var primos = commissions + paimonShop + abyss + buy
+
+                var battlepass = 0
+                var welk = 0
+                if (bp == "yes") {
+                    battlepass = months * 1320
+                    primos += battlepass
+                }
+                if (welkins == "yes") {
+                    welk = days * 90
+                    primos += welk
+                }
+
+                var wishes = pitycount + Math.floor(primos / 160)
+                var softPities = Math.floor(wishes / 76)
+                var hardPities = Math.floor(wishes / 90)
+
+                let guranteed;
+                if (coinflip == "yes") {
+                    guranteed = Math.floor(hardPities / 2) + (hardPities % 2)
+                } else {
+                    guranteed = Math.floor(hardPities / 2)
+                }
+
+                var breakdown = ""
+                breakdown += "Commissions: " + commissions + " · Paimon Shop: " + paimonShop + " · Abyss: " + abyss + " · Welkins: " + welk + " · Battle Pass: " + battlepass
+
+                document.getElementById("primos").innerHTML = "Primogems 💎: " + primos
+                document.getElementById("breakdown").innerHTML = breakdown
+                document.getElementById("wish").innerHTML = "Wishes 🌠: " + wishes
+                document.getElementById("soft").innerHTML = "Soft Pities: " + softPities
+                document.getElementById("hard").innerHTML = "Hard Pities: " + hardPities
+                document.getElementById("guranteed").innerHTML = "Guranteed Rate Up 5⭐: " + guranteed
+            }
+
+        </script>
+    </body>
+</html>
